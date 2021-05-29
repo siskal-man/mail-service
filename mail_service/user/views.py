@@ -19,7 +19,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('index')
+            return redirect('profile')
         else:
             return HttpResponse('Нет такого пользователя')
     return render(request, 'login.html')
@@ -30,7 +30,7 @@ def logout_view(request):
     return redirect('index')
 
 
-def registration(request):
+def registration_view(request):
     if request.method == 'POST':
         name = request.POST['name']
         email = request.POST['email']
@@ -42,3 +42,7 @@ def registration(request):
 
         return redirect('login')
     return render(request, 'registration.html')
+
+
+def profile_view(request):
+    return render(request, 'profile.html')
