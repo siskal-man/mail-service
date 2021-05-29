@@ -18,12 +18,21 @@
         <a class="nav-link" href="#">Личный кабинет</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'login' %}">Войти в аккаунт</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'registration' %}">Регистрация</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="#">О нас</a>
       </li>
+
+
     </ul>
   </div>
 </nav>
 </body>
+
 
 {% block form %}
 
@@ -33,9 +42,7 @@
 <footer class="page-footer font-small blue navbar-dark bg-primary">
 
   <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
-  </div>
+  <div class="footer-copyright text-center py-3">© 2020 Copyright</div>
   <!-- Copyright -->
 
 </footer>
