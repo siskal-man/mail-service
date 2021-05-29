@@ -1,26 +1,33 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 
 
 def index(request):
-    return render(request, 'base.html')
+    res = False
+    if request.user.is_authenticated:
+        res = True
+    return render(request, 'base.html', {'auth': res})
 
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         password = request.POST.get('password')
-        user = authenticate(username=name, password=password)
+        user = authenticate(request, username=name, password=password)
 
         if user is not None:
-            login(request)
-            return HttpResponse('Вы вошли')
+            login(request, user)
+            return redirect('index')
         else:
             return HttpResponse('Нет такого пользователя')
-    elif request.method == 'GET':
-        return render(request, 'login.html')
+    return render(request, 'login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('index')
 
 
 def registration(request):
@@ -32,6 +39,6 @@ def registration(request):
 
         new_user = User.objects.create_user(username=name, email=email, password=password)
         new_user.save()
-    elif request.method == 'GET':
 
-        return render(request, 'registration.html')
+        return redirect('login')
+    return render(request, 'registration.html')
