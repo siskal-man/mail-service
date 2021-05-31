@@ -2,8 +2,16 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 
+def check_att(cur_att, new_att):
+    if new_att:
+        return new_att
+    return cur_att
+
+
+@login_required
 def index(request):
     res = False
     if request.user.is_authenticated:
@@ -44,5 +52,25 @@ def registration_view(request):
     return render(request, 'registration.html')
 
 
+@login_required
 def profile_view(request):
-    return render(request, 'profile.html')
+    cur_user = request.user
+    return render(request, 'profile.html', {'user': cur_user})
+
+
+@login_required
+def profile_settings_view(request):
+    cur_user = request.user
+    if request.method == 'POST':
+        username = request.POST.get('name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        cur_user.username = check_att(cur_att=cur_user.username, new_att=username)
+
+    return render(request, 'settings.html', {'user': cur_user})
+
+
+@login_required
+def user_contacts_view(request):
+    return render(request, 'contacts.html')
